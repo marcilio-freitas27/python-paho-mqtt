@@ -80,8 +80,11 @@
 
 from flask import Flask, request, jsonify
 from flask_mqtt import Mqtt
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
+lista = [];
 
 app.config['MQTT_BROKER_URL'] = 'broker.emqx.io'
 app.config['MQTT_BROKER_PORT'] = 1883
@@ -93,7 +96,6 @@ topic = '/flask/mqtt'
 
 mqtt_client = Mqtt(app)
 
-
 @mqtt_client.on_connect()
 def handle_connect(client, userdata, flags, rc):
    if rc == 0:
@@ -101,7 +103,6 @@ def handle_connect(client, userdata, flags, rc):
        mqtt_client.subscribe(topic) # subscribe topic
    else:
        print('Bad connection. Code:', rc)
-
 
 @mqtt_client.on_message()
 def handle_mqtt_message(client, userdata, message):
@@ -111,12 +112,18 @@ def handle_mqtt_message(client, userdata, message):
   )
    print('Received message on topic: {topic} with payload: {payload}'.format(**data))
 
+@app.route('/getMessage', methods=['GET'])
+def get_message():
+   return lista
 
+   
 @app.route('/publish', methods=['POST'])
 def publish_message():
    request_data = request.get_json()
    publish_result = mqtt_client.publish(request_data['topic'], request_data['msg'])
-   return jsonify({'code': publish_result[0]})
+   print({request_data['topic'], request_data['msg']})
+   lista.append(request_data['msg'])
+   return lista
 
 if __name__ == '__main__':
-   app.run(host='0.0.0.0', port=5000)
+   app.run(host='127.0.0.1', port=5000)
