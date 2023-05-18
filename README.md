@@ -1,6 +1,8 @@
 
 # Atividade - Aplicação com Mqtt
 
+***
+
 ### Sobre a aplicação
 
 - O Flask dispõe de uma biblioteca chamada **flask_mqtt**
@@ -17,6 +19,8 @@ com o método **getMessage**.
 do broker escolhido, criamos um método **publish** para públicar
 da nossa aplicação para as demais que estavam conectadas.
 
+
+***
 ### Gráfico
 
 - Abaixo um pequeno esquema de como funciona a configuração básica do Mqtt na nossa aplicação.
@@ -47,11 +51,25 @@ da nossa aplicação para as demais que estavam conectadas.
 
 ```
 
+***
 ### Imagens
 
 - Abaixo algumas imagens dos resultados obtidos
 
-![imagem](img/mensagens-frontend.PNG)
-![imagem](img/mensagens-frontend.PNG)
-![imagem](img/mensagens-frontend.PNG)
+***
+
+- Capturando as mensagens 
+
+![imagem](img/show-messages-get.PNG)
+
+- Publicação com a API
+
+![imagem](img/publish.PNG)
+
+- Desconhecidos conectados ao tópico e broker atuais
+
+![imagem](img/messages-another-client.PNG)
+
+
+- Frontend
 ![imagem](img/mensagens-frontend.PNG)
