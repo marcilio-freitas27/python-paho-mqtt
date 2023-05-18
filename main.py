@@ -43,7 +43,7 @@ def publish_message():
    request_data = request.get_json()
    publish_result = mqtt_client.publish(request_data['topic'], request_data['msg'])
    print({request_data['topic'], request_data['msg']}, publish_result)
-   return request_data['msg']
+   return lista
 
 if __name__ == '__main__':
    app.run(host='0.0.0.0', port=5000, debug=True)
