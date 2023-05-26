@@ -1,10 +1,12 @@
-from flask import Flask, request
+from flask import Flask, request, Response
 from flask_mqtt import Mqtt
 from flask_cors import CORS
+from datetime import datetime
+import time
 
 app = Flask(__name__)
 CORS(app)
-lista = [];
+lista = []
 
 app.config['MQTT_BROKER_URL'] = 'broker.emqx.io'
 app.config['MQTT_BROKER_PORT'] = 1883
@@ -44,6 +46,19 @@ def publish_message():
    publish_result = mqtt_client.publish(request_data['topic'], request_data['msg'])
    print({request_data['topic'], request_data['msg']}, publish_result)
    return lista
+
+@app.route('/stream')
+def stream():
+
+   def get_data():
+
+      while True:
+         #gotcha
+         time.sleep(1)
+         yield f'data: {lista} \n\n'
+
+   return Response(get_data(), mimetype='text/event-stream')
+
 
 if __name__ == '__main__':
    app.run(host='0.0.0.0', port=5000, debug=True)
